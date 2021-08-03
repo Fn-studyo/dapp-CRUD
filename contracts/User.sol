@@ -27,6 +27,12 @@ contract User {
     }
 
     //Fetch user
-    function fetchUser() public returns (User user){}
+    function fetchUser(address userAddress) constant returns(string name, bytes32 email, uint age){
+        return (
+            users[userAddress].name, 
+            users[userAddress].email, 
+            users[userAddress].age
+        );
+    }
 
 }
