@@ -9,6 +9,22 @@ contract User {
         bytes32 email
     }
 
+    event CreateUser(
+        address indexed userAddress,
+        uint index, 
+        string name,
+        bytes32 email, 
+        uint age,
+    );
+
+    event UpdateUser(
+        address indexed userAddress, 
+        uint index,
+        string name,
+        bytes32 email, 
+        uint age
+    );
+
     //store the data in the form of key-value pairs (users)
     mapping(address => User) private users;
     address[] private userIndex;
@@ -39,6 +55,11 @@ contract User {
             users[userAddress].email, 
             users[userAddress].age
         );
+    }
+
+    //count total number of users
+    function count() public constant returns(uint count) {
+        return userIndex.length;
     }
 
     //Update a user
