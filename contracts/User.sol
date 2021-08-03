@@ -3,7 +3,7 @@ pragma solidity >=0.4.22 <0.9.0;
 contract User {
 
     struct User {
-        uint id,
+        uint index,
         string name,
         uint age,
         bytes32 email
@@ -13,7 +13,13 @@ contract User {
     mapping(address => User) private users;
     address[] private userIndex;
 
-    //Add a new user
+    function checkUser(address userAddress) public constant returns(bool isUser) {
+        if(userIndex.length == 0) return false;
+
+        return (userIndex[users[userAddress].index] == userAddress);
+    }
+
+    //Create a new user
     function addUser(
         address userAddress,
         string name,
@@ -34,5 +40,12 @@ contract User {
             users[userAddress].age
         );
     }
+
+    //Update a user
+    function updateUser(
+        address userAddress,
+        bytes32 email,
+        uint age
+    ) public returns (bool success) {}
 
 }
