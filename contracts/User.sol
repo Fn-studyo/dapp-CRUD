@@ -2,11 +2,11 @@
 pragma solidity >=0.4.22 <0.9.0;
 contract User {
 
-    struct User {
-        uint index,
-        string name,
-        uint age,
-        bytes32 email
+    struct UserModel {
+        uint index;
+        string name;
+        uint age;
+        bytes32 email;
     }
 
     event CreateUser(
@@ -14,7 +14,7 @@ contract User {
         uint index, 
         string name,
         bytes32 email, 
-        uint age,
+        uint age
     );
 
     event UpdateUser(
@@ -26,10 +26,10 @@ contract User {
     );
 
     //store the data in the form of key-value pairs (users)
-    mapping(address => User) private users;
+    mapping(address => UserModel) private users;
     address[] private userIndex;
 
-    function checkUser(address userAddress) public constant returns(bool isUser) {
+    function checkUser(address userAddress) public view returns(bool isUser) {
         if(userIndex.length == 0) return false;
 
         return (userIndex[users[userAddress].index] == userAddress);
@@ -38,9 +38,9 @@ contract User {
     //Create a new user
     function addUser(
         address userAddress,
-        string name,
+        string memory name,
         bytes32 userEmail,
-        uint userAge,
+        uint userAge
     ) public returns (bool success){
         users[userAddress].name = name;
         users[userAddress].email = userEmail;
@@ -49,7 +49,7 @@ contract User {
     }
 
     //Fetch user
-    function fetchUser(address userAddress) constant returns(string name, bytes32 email, uint age){
+    function fetchUser(address userAddress) public view returns(string memory name, bytes32 email, uint age){
         return (
             users[userAddress].name, 
             users[userAddress].email, 
@@ -58,7 +58,7 @@ contract User {
     }
 
     //count total number of users
-    function count() public constant returns(uint count) {
+    function getUserCount() public view returns(uint count) {
         return userIndex.length;
     }
 
@@ -67,18 +67,18 @@ contract User {
         address userAddress,
         bytes32 email
     ) public returns (bool success) {
-        if(!isUser(userAddress)) return false)) throw;
+        require(!checkUser(userAddress));
         users[userAddress].email = email;
         return true;
     }
 
     function updateUserAge(address userAddress, uint age) public returns (bool success) {
-        if(!isUser(userAddress)) return false)) throw;
+        require(!checkUser(userAddress));
         users[userAddress].age = age;
         return true;
     }
 
-    function getUserByIndex(uint index) public constant returns(address userAddress){
+    function getUserByIndex(uint index) public view returns(address userAddress){
         return userIndex[index];
     }
 
