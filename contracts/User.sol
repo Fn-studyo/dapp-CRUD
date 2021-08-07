@@ -63,10 +63,23 @@ contract User {
     }
 
     //Update a user
-    function updateUser(
+    function updateUserEmail(
         address userAddress,
-        bytes32 email,
-        uint age
-    ) public returns (bool success) {}
+        bytes32 email
+    ) public returns (bool success) {
+        if(!isUser(userAddress)) return false)) throw;
+        users[userAddress].email = email;
+        return true;
+    }
+
+    function updateUserAge(address userAddress, uint age) public returns (bool success) {
+        if(!isUser(userAddress)) return false)) throw;
+        users[userAddress].age = age;
+        return true;
+    }
+
+    function getUserByIndex(uint index) public constant returns(address userAddress){
+        return userIndex[index];
+    }
 
 }
